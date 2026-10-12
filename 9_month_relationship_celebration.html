@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9 Месяцев Вместе — Наша История Любви</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        warmGold: '#E5C158',
+                        roseGold: '#D48C9A',
+                        deepRose: '#8B263E',
+                        creamPaper: '#FFF8F0',
+                        warmSepia: '#3A2723',
+                        vintageOverlay: 'rgba(245, 230, 210, 0.12)'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                        handwriting: ['"Caveat"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0d050c;
+            color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism with Warm Vintage Glow */
+        .glass-card {
+            background: rgba(30, 15, 25, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(229, 193, 88, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 140, 154, 0.1);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(229, 193, 88, 0.25), inset 0 0 25px rgba(212, 140, 154, 0.2);
+            border-color: rgba(229, 193, 88, 0.5);
+        }
+
+        /* Pulsing Glowing Heart Entrance Animation */
+        @keyframes pulse-glow {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.8)) drop-shadow(0 0 50px rgba(229, 193, 88, 0.5));
+            }
+            50% {
+                transform: scale(1.18);
+                filter: drop-shadow(0 0 45px rgba(244, 63, 94, 1)) drop-shadow(0 0 75px rgba(236, 72, 153, 0.7));
+            }
+        }
+
+        .pulsing-heart {
+            animation: pulse-glow 1.6s infinite ease-in-out;
+            cursor: pointer;
+        }
+
+        /* Polaroid Photo Frame Styling */
+        .polaroid-frame {
+            background: #fffdf9;
+            padding: 12px 12px 42px 12px;
+            border-radius: 8px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .polaroid-frame:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 30;
+            box-shadow: 0 20px 45px rgba(229, 193, 88, 0.4), 0 0 20px rgba(244, 63, 94, 0.3);
+        }
+
+        /* Warm Memory Effect Filter */
+        .memory-filter {
+            filter: sepia(0.25) contrast(1.05) brightness(1.02) saturate(1.15);
+            transition: filter 0.5s ease;
+        }
+
+        .polaroid-frame:hover .memory-filter {
+            filter: sepia(0) contrast(1) brightness(1) saturate(1);
+        }
+
+        /* Ambient glowing dots background */
+        .bg-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        #particleCanvas, #heartCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        #particleCanvas { z-index: 1; }
+        #heartCanvas { z-index: 50; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0d050c; }
+        ::-webkit-scrollbar-thumb { background: #4a1525; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8b263e; }
+    </style>
+</head>
+<body class="min-h-screen relative font-sans antialiased selection:bg-roseGold selection:text-white">
+
+    <!-- Ambient Floating Light Orbs -->
+    <div class="bg-glow w-96 h-96 bg-roseGold top-10 -left-20"></div>
+    <div class="bg-glow w-96 h-96 bg-deepRose bottom-10 -right-20"></div>
+    <div class="bg-glow w-80 h-80 bg-warmGold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20"></div>
+
+    <!-- Canvas Animation Overlays -->
+    <canvas id="particleCanvas"></canvas>
+    <canvas id="heartCanvas"></canvas>
+
+    <!-- Audio Player Controller -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-love-piano-112185.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 1. ENTRANCE SCREEN WITH PULSING HEART -->
+    <div id="entranceScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-2xl transition-opacity duration-1000 p-6 text-center">
+        <div class="relative flex flex-col items-center max-w-md">
+            
+            <div id="startHeartBtn" class="pulsing-heart mb-8 transition-transform duration-300 active:scale-90" title="Нажми, чтобы открыть секрет!">
+                <svg class="w-36 h-36 md:w-48 md:h-48 text-rose-500 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+
+            <h1 class="font-serif text-3xl md:text-4xl text-rose-100 font-bold mb-3 tracking-wide drop-shadow-md">
+                Наши 9 Месяцев Счастья
+            </h1>
+            <p class="text-rose-200/80 text-sm md:text-base mb-8 font-light leading-relaxed">
+                Коснись сердца, чтобы погрузиться в нашу атмосферу любви и приятных воспоминаний ✨
+            </p>
+
+            <button id="triggerEnterBtn" class="px-8 py-3.5 rounded-full glass-card border border-warmGold/40 text-warmGold font-medium text-sm uppercase tracking-widest transition-all duration-300 hover:border-warmGold hover:shadow-[0_0_30px_rgba(229,193,88,0.5)] flex items-center gap-3">
+                <i class="fa-solid fa-heart text-rose-400"></i>
+                <span>Открыть альбом воспоминаний</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN INTERFACE CONTENT -->
+    <main id="mainContent" class="opacity-0 transition-opacity duration-1000 max-w-6xl mx-auto px-4 py-8 md:py-12 relative z-10 hidden">
+
+        <!-- Navigation Header & Audio Toggle -->
+        <header class="flex flex-wrap justify-between items-center mb-10 glass-card px-6 py-4 rounded-2xl gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-roseGold via-deepRose to-warmGold flex items-center justify-center text-white font-serif font-bold text-lg shadow-lg">
+                    9M
+                </div>
+                <div>
+                    <h2 class="font-serif font-bold text-lg text-rose-100 leading-tight">9 Месяцев Любви</h2>
+                    <p class="text-xs text-warmGold/80 font-handwriting text-base">Теплые и приятные воспоминания</p>
+                </div>
+            </div>
+
+            <!-- Live Clock Display -->
+            <div class="hidden sm:flex flex-col text-right font-mono text-xs text-rose-200/80">
+                <span class="text-warmGold font-semibold" id="liveClockDate">--.--.----</span>
+                <span id="liveClockTime" class="text-sm font-bold text-rose-100">00:00:00</span>
+            </div>
+
+            <button id="musicToggle" class="px-5 py-2.5 rounded-full glass-card border border-rose-400/30 text-rose-200 text-xs md:text-sm font-medium flex items-center gap-2.5 hover:bg-rose-900/40 transition-all">
+                <i id="musicIcon" class="fa-solid fa-music text-warmGold"></i>
+                <span id="musicText">Включить музыку</span>
+            </button>
+        </header>
+
+        <!-- Title Banner -->
+        <section class="text-center max-w-3xl mx-auto mb-14">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-rose-950/60 border border-warmGold/30 text-warmGold text-xs uppercase tracking-widest mb-4 shadow-sm">
+                💖 Источник Нашего Вдохновения 💖
+            </span>
+            <h1 class="font-serif text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-100 via-rose-200 to-warmGold mb-4 leading-tight drop-shadow">
+                Коллекция Тёплых Мгновений
+            </h1>
+            <p class="text-rose-200/80 text-base md:text-lg font-light leading-relaxed">
+                Каждый кадр — это особенный день, наполненный твоей искренней улыбкой, уютом и нежностью.
+            </p>
+        </section>
+
+        <!-- 4. GALLERY WITH PREFERRED PHOTOS ("Приятные воспоминания") -->
+        <section class="mb-16">
+            <div class="flex justify-between items-center mb-6 px-2">
+                <h3 class="font-serif text-2xl text-rose-100 flex items-center gap-3">
+                    <i class="fa-solid fa-camera-retro text-warmGold"></i> Галерея Пленки Нашей Памяти
+                </h3>
+                <span class="text-xs text-warmGold/80 font-handwriting text-lg">Наведи для теплого эффекта ✨</span>
+            </div>
+
+            <!-- Polaroid Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                
+                <!-- Photo 1 -->
+                <div class="polaroid-frame transform -rotate-2">
+                    <div class="aspect-[3/4] overflow-hidden rounded-md bg-warmSepia mb-3 relative">
+                        <img src="WhatsApp Image 2026-10-13 at 00.30.12.jpeg" 
+                             alt="Воспоминание 1" class="w-full h-full object-cover memory-filter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                    <p class="font-handwriting text-warmSepia text-xl text-center font-bold">Сладкие моменты вместе 🍫</p>
+                </div>
+
+                <!-- Photo 2 -->
+                <div class="polaroid-frame transform rotate-3">
+                    <div class="aspect-[3/4] overflow-hidden rounded-md bg-warmSepia mb-3 relative">
+                        <img src="WhatsApp Image 2026-10-13 at 00.24.17.jpeg" 
+                             alt="Воспоминание 2" class="w-full h-full object-cover memory-filter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                    <p class="font-handwriting text-warmSepia text-xl text-center font-bold">Твоя милая улыбка 😊</p>
+                </div>
+
+                <!-- Photo 3 -->
+                <div class="polaroid-frame transform -rotate-3">
+                    <div class="aspect-[3/4] overflow-hidden rounded-md bg-warmSepia mb-3 relative">
+                        <img src="WhatsApp Image 2026-10-13 at 00.24.18 (1).jpeg" 
+                             alt="Воспоминание 3" class="w-full h-full object-cover memory-filter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                    <p class="font-handwriting text-warmSepia text-xl text-center font-bold">Солнечные прогулки ☀️</p>
+                </div>
+
+                <!-- Photo 4 -->
+                <div class="polaroid-frame transform rotate-2">
+                    <div class="aspect-[3/4] overflow-hidden rounded-md bg-warmSepia mb-3 relative">
+                        <img src="WhatsApp Image 2026-10-13 at 00.24.18 (2).jpeg" 
+                             alt="Воспоминание 4" class="w-full h-full object-cover memory-filter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                    <p class="font-handwriting text-warmSepia text-xl text-center font-bold">В твоих объятиях 🌿</p>
+                </div>
+
+                <!-- Photo 5 -->
+                <div class="polaroid-frame transform -rotate-1">
+                    <div class="aspect-[3/4] overflow-hidden rounded-md bg-warmSepia mb-3 relative">
+                        <img src="WhatsApp Image 2026-10-13 at 00.24.18 (3).jpeg" 
+                             alt="Воспоминание 5" class="w-full h-full object-cover memory-filter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                    <p class="font-handwriting text-warmSepia text-xl text-center font-bold">Нежный поцелуй 💋</p>
+                </div>
+
+                <!-- Photo 6 -->
+                <div class="polaroid-frame transform rotate-3">
+                    <div class="aspect-[3/4] overflow-hidden rounded-md bg-warmSepia mb-3 relative">
+                        <img src="WhatsApp Image 2026-10-13 at 00.28.46 (1).jpeg" 
+                             alt="Воспоминание 6" class="w-full h-full object-cover memory-filter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                    <p class="font-handwriting text-warmSepia text-xl text-center font-bold">Вечерняя романтика 🌙</p>
+                </div>
+
+                <!-- Photo 7 -->
+                <div class="polaroid-frame transform -rotate-2">
+                    <div class="aspect-[3/4] overflow-hidden rounded-md bg-warmSepia mb-3 relative">
+                        <img src="WhatsApp Image 2026-10-13 at 00.28.46.jpeg" 
+                             alt="Воспоминание 7" class="w-full h-full object-cover memory-filter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                    <p class="font-handwriting text-warmSepia text-xl text-center font-bold">Рядом сквозь время 🤍</p>
+                </div>
+
+                <!-- Photo 8 -->
+                <div class="polaroid-frame transform rotate-1">
+                    <div class="aspect-[3/4] overflow-hidden rounded-md bg-warmSepia mb-3 relative">
+                        <img src="WhatsApp Image 2026-10-13 at 00.28.47.jpeg" 
+                             alt="Воспоминание 8" class="w-full h-full object-cover memory-filter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                    <p class="font-handwriting text-warmSepia text-xl text-center font-bold">Искренние взгляды ✨</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 2. REAL TIMERS & COUNTDOWN -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            
+            <!-- CARD 1: Deadline Requested Exact Format -->
+            <div class="glass-card glass-card-hover rounded-3xl p-6 md:p-8 relative overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs uppercase font-semibold text-warmGold tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-hourglass-start animate-pulse"></i> Точный Обратный Отсчет
+                        </span>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] bg-warmGold/20 text-warmGold font-mono">COUNTDOWN</span>
+                    </div>
+
+                    <h3 class="font-serif text-2xl text-rose-100 font-bold mb-2">
+                        Главный Отсчет Любви
+                    </h3>
+                    <p class="text-xs text-rose-200/70 mb-6">
+                        Динамический расчет обратного таймера
+                    </p>
+                </div>
+
+                <!-- Highlighted Text Display Box -->
+                <div class="bg-gradient-to-r from-rose-950/90 via-black/80 to-rose-950/90 p-5 rounded-2xl border border-warmGold/40 text-center shadow-inner my-2">
+                    <div class="text-xs text-warmGold/90 mb-2 font-medium uppercase tracking-widest">Точный формат:</div>
+                    <div id="exactCountdownText" class="font-mono text-base md:text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-warmGold via-rose-200 to-rose-300 py-1">
+                        Осталось: 7 лет 5 месяцев 2 часа 60 минут 52 сек
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2 mt-4 text-center">
+                    <div class="glass-card p-2 rounded-xl">
+                        <span id="cdYears" class="block font-mono text-lg font-bold text-warmGold">7</span>
+                        <span class="text-[10px] text-rose-300 uppercase">Лет</span>
+                    </div>
+                    <div class="glass-card p-2 rounded-xl">
+                        <span id="cdMonths" class="block font-mono text-lg font-bold text-warmGold">5</span>
+                        <span class="text-[10px] text-rose-300 uppercase">Месяцев</span>
+                    </div>
+                    <div class="glass-card p-2 rounded-xl">
+                        <span id="cdHours" class="block font-mono text-lg font-bold text-warmGold">02</span>
+                        <span class="text-[10px] text-rose-300 uppercase">Часов</span>
+                    </div>
+                    <div class="glass-card p-2 rounded-xl">
+                        <span id="cdSecs" class="block font-mono text-lg font-bold text-warmGold">52</span>
+                        <span class="text-[10px] text-rose-300 uppercase">Секунд</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 2: Real Time Relationship Counter -->
+            <div class="glass-card glass-card-hover rounded-3xl p-6 md:p-8 relative overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs uppercase font-semibold text-rose-300 tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-heart pulse text-rose-500"></i> Прошло времени
+                        </span>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] bg-rose-500/20 text-rose-300 font-mono">LIVE TIMER</span>
+                    </div>
+
+                    <h3 class="font-serif text-2xl text-rose-100 font-bold mb-2">
+                        Мы вместе в реальном времени
+                    </h3>
+                    <p class="text-xs text-rose-200/70 mb-6">
+                        Каждая секунда прибавляет теплоту в нашу копилку
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2 md:gap-3 text-center mb-4">
+                    <div class="glass-card p-3 rounded-2xl border border-rose-500/20">
+                        <div id="elapsedDays" class="font-serif text-2xl md:text-3xl font-bold text-rose-100">274</div>
+                        <div class="text-[10px] md:text-xs text-rose-300/80 uppercase mt-1">Дней</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-2xl border border-rose-500/20">
+                        <div id="elapsedHours" class="font-serif text-2xl md:text-3xl font-bold text-rose-100">14</div>
+                        <div class="text-[10px] md:text-xs text-rose-300/80 uppercase mt-1">Часов</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-2xl border border-rose-500/20">
+                        <div id="elapsedMins" class="font-serif text-2xl md:text-3xl font-bold text-rose-100">32</div>
+                        <div class="text-[10px] md:text-xs text-rose-300/80 uppercase mt-1">Минут</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-2xl border border-rose-500/20">
+                        <div id="elapsedSecs" class="font-serif text-2xl md:text-3xl font-bold text-warmGold">08</div>
+                        <div class="text-[10px] md:text-xs text-rose-300/80 uppercase mt-1">Секунд</div>
+                    </div>
+                </div>
+
+                <div class="text-center bg-rose-950/40 p-3 rounded-xl border border-warmGold/20">
+                    <span class="text-xs font-handwriting text-xl text-warmGold">
+                        ~ 9 месяцев искреннего счастья и тепла ~
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. HEARTFELT SINCERE WISHES CARD -->
+        <section class="glass-card rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden border border-warmGold/30">
+            <div class="max-w-3xl mx-auto text-center">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-roseGold via-deepRose to-warmGold mx-auto mb-6 flex items-center justify-center shadow-lg shadow-rose-950/80">
+                    <i class="fa-solid fa-envelope-open-text text-2xl text-white"></i>
+                </div>
+
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-rose-100 mb-6">
+                    Наши 9 Месяцев: Пожелание Сердцем
+                </h2>
+
+                <div class="space-y-6 text-rose-100/90 text-base md:text-lg font-light leading-relaxed text-justify md:text-center">
+                    <p>
+                        Любимый мой человек, сегодня ровно <strong class="text-warmGold font-medium">9 месяцев</strong> с тех пор, как мы идем рука об руку. За это время ты наполняешь каждый мой день смыслом, светом и непередаваемым чувством домашнего уюта.
+                    </p>
+                    <p>
+                        Спасибо за твои искренние улыбки, за то, как мы смеемся над мелочами, поддержание в любой ситуации и за теплые взгляды, от которых становится спокойно на душе. Наши приятные воспоминания — это самая ценная коллекция, которую я бережно храню.
+                    </p>
+                    <p>
+                        Пусть эти 9 месяцев станут только началом нашей долгой, красивой и счастливой истории. Желаю нам сохранять эту нежность, беречь друг друга и уверенно воплощать все наши общие мечты!
+                    </p>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-rose-500/20 flex flex-col items-center">
+                    <span class="font-handwriting text-3xl text-warmGold mb-2">Люблю тебя бесконечно! ❤️</span>
+                    <button id="interactiveHeartBtn" class="px-8 py-3 rounded-full bg-gradient-to-r from-rose-600 to-deepRose text-white font-medium text-sm flex items-center gap-2 hover:shadow-[0_0_25px_rgba(244,63,94,0.7)] transition-all transform hover:scale-105 active:scale-95 border border-rose-400/40">
+                        <i class="fa-solid fa-sparkles text-warmGold"></i>
+                        <span>Отправить Волну Любви</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-6 text-xs text-rose-300/40 font-mono">
+            <p>Создано с любовью • 9 Месяцев Вместе • 2026</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // DOM Elements
+        const entranceScreen = document.getElementById('entranceScreen');
+        const mainContent = document.getElementById('mainContent');
+        const startHeartBtn = document.getElementById('startHeartBtn');
+        const triggerEnterBtn = document.getElementById('triggerEnterBtn');
+        const musicToggle = document.getElementById('musicToggle');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+        const interactiveHeartBtn = document.getElementById('interactiveHeartBtn');
+
+        let isMusicPlaying = false;
+
+        // Music Control Function
+        function toggleAudio() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicIcon.className = 'fa-solid fa-music text-warmGold';
+                musicText.textContent = 'Включить музыку';
+                isMusicPlaying = false;
+            } else {
+                bgMusic.play().then(() => {
+                    musicIcon.className = 'fa-solid fa-pause text-rose-400';
+                    musicText.textContent = 'Пауза';
+                    isMusicPlaying = true;
+                }).catch(e => {
+                    console.log('Audio autoplay blocked:', e);
+                });
+            }
+        }
+
+        musicToggle.addEventListener('click', toggleAudio);
+
+        // Floating Background Particles (Hearts & Sparkles)
+        const particleCanvas = document.getElementById('particleCanvas');
+        const pCtx = particleCanvas.getContext('2d');
+        let bgParticles = [];
+
+        function resizeParticleCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeParticleCanvas);
+        resizeParticleCanvas();
+
+        class BgParticle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * particleCanvas.width;
+                this.y = particleCanvas.height + Math.random() * 80;
+                this.size = Math.random() * 14 + 6;
+                this.speedY = Math.random() * 0.9 + 0.3;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.opacity = Math.random() * 0.45 + 0.15;
+                this.symbol = Math.random() > 0.3 ? '♥' : '✨';
+                this.color = Math.random() > 0.5 ? '#E5C158' : '#D48C9A';
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < -20) this.reset();
+            }
+            draw() {
+                pCtx.save();
+                pCtx.globalAlpha = this.opacity;
+                pCtx.fillStyle = this.color;
+                pCtx.font = `${this.size}px serif`;
+                pCtx.fillText(this.symbol, this.x, this.y);
+                pCtx.restore();
+            }
+        }
+
+        for (let i = 0; i < 40; i++) bgParticles.push(new BgParticle());
+
+        function animateBgParticles() {
+            pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            bgParticles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateBgParticles);
+        }
+        animateBgParticles();
+
+        // Explosive Heart Shatter Particles (Canvas Animation)
+        const heartCanvas = document.getElementById('heartCanvas');
+        const hCtx = heartCanvas.getContext('2d');
+        let burstParticles = [];
+
+        function resizeHeartCanvas() {
+            heartCanvas.width = window.innerWidth;
+            heartCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeHeartCanvas);
+        resizeHeartCanvas();
+
+        class BurstParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 14 + 4;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed - 2;
+                this.gravity = 0.18;
+                this.friction = 0.97;
+                this.size = Math.random() * 20 + 8;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.02 + 0.012;
+                this.color = ['#f43f5e', '#ec4899', '#E5C158', '#D48C9A', '#ffffff'][Math.floor(Math.random() * 5)];
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.25;
+            }
+            update() {
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+                this.rotation += this.rotSpeed;
+            }
+            draw() {
+                hCtx.save();
+                hCtx.globalAlpha = Math.max(0, this.alpha);
+                hCtx.translate(this.x, this.y);
+                hCtx.rotate(this.rotation);
+                hCtx.fillStyle = this.color;
+                hCtx.font = `${this.size}px sans-serif`;
+                hCtx.fillText('♥', -this.size / 2, this.size / 2);
+                hCtx.restore();
+            }
+        }
+
+        function triggerHeartBurst(originX, originY) {
+            for (let i = 0; i < 90; i++) {
+                burstParticles.push(new BurstParticle(originX, originY));
+            }
+        }
+
+        function animateBurst() {
+            hCtx.clearRect(0, 0, heartCanvas.width, heartCanvas.height);
+            for (let i = burstParticles.length - 1; i >= 0; i--) {
+                const p = burstParticles[i];
+                p.update();
+                p.draw();
+                if (p.alpha <= 0) burstParticles.splice(i, 1);
+            }
+            requestAnimationFrame(animateBurst);
+        }
+        animateBurst();
+
+        // Entrance Screen Heart Explosion Trigger
+        function handleEntranceTrigger() {
+            const rect = startHeartBtn.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            triggerHeartBurst(centerX, centerY);
+            toggleAudio();
+
+            entranceScreen.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                entranceScreen.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                setTimeout(() => {
+                    mainContent.classList.remove('opacity-0');
+                }, 50);
+            }, 800);
+        }
+
+        startHeartBtn.addEventListener('click', handleEntranceTrigger);
+        triggerEnterBtn.addEventListener('click', handleEntranceTrigger);
+
+        interactiveHeartBtn.addEventListener('click', () => {
+            const rect = interactiveHeartBtn.getBoundingClientRect();
+            triggerHeartBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        });
+
+        // 9 Months Start Date Base
+        const startDate = new Date();
+        startDate.setMonth(startDate.getMonth() - 9);
+
+        // Requested Countdown Values Ticker
+        let cdYears = 7;
+        let cdMonths = 5;
+        let cdHours = 2;
+        let cdMins = 60;
+        let cdSecs = 52;
+
+        function updateTimers() {
+            const now = new Date();
+
+            // Live Header Clock
+            document.getElementById('liveClockDate').textContent = now.toLocaleDateString('ru-RU');
+            document.getElementById('liveClockTime').textContent = now.toLocaleTimeString('ru-RU');
+
+            // 1. Relationship Elapsed Live Counter
+            const diffMs = now - startDate;
+            const elapsedDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const elapsedHours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+            const elapsedMins = Math.floor((diffMs / (1000 * 60)) % 60);
+            const elapsedSecs = Math.floor((diffMs / 1000) % 60);
+
+            document.getElementById('elapsedDays').textContent = elapsedDays;
+            document.getElementById('elapsedHours').textContent = String(elapsedHours).padStart(2, '0');
+            document.getElementById('elapsedMins').textContent = String(elapsedMins).padStart(2, '0');
+            document.getElementById('elapsedSecs').textContent = String(elapsedSecs).padStart(2, '0');
+
+            // 2. Exact requested countdown ticker
+            cdSecs--;
+            if (cdSecs < 0) {
+                cdSecs = 59;
+                cdMins--;
+                if (cdMins < 0) {
+                    cdMins = 59;
+                    cdHours--;
+                    if (cdHours < 0) {
+                        cdHours = 23;
+                    }
+                }
+            }
+
+            // Render exact text string requested
+            const exactText = `Осталось: ${cdYears} лет ${cdMonths} месяцев ${cdHours} часа ${cdMins} минут ${cdSecs} сек`;
+            document.getElementById('exactCountdownText').textContent = exactText;
+
+            // Render visual grid blocks
+            document.getElementById('cdYears').textContent = cdYears;
+            document.getElementById('cdMonths').textContent = cdMonths;
+            document.getElementById('cdHours').textContent = String(cdHours).padStart(2, '0');
+            document.getElementById('cdSecs').textContent = String(cdSecs).padStart(2, '0');
+        }
+
+        updateTimers();
+        setInterval(updateTimers, 1000);
+    </script>
+</body>
+</html>
